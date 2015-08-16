@@ -1,0 +1,6 @@
+{
+	"name": "game",
+  	"main": "game_server.js",
+  	"author": "Silent Tecno Studio",
+  	"license": "GPLv2"
+}
