@@ -1,13 +1,21 @@
 "use strict";
+var game = game || {};
 game.helpers = {
-		getBrowserLimits : function() {
+		getBrowserLimits: function() {
 			var documentElement = document.documentElement,
 				bodyElement = $('body')[0],
 				layoutWidth = window.innerWidth || documentElement.clientWidth || bodyElement.clientWidth,
 				layoutHeight = window.innerHeight || documentElement.clientHeight || bodyElement.clientHeight;
 			return {width: layoutWidth, height: layoutHeight};
+		},
+		isEmpty: function(object) {
+			return (typeof object === "undefined" || object === null || object === "" );
 		}
 };
+
+if (typeof module !== "undefined") {
+    module.exports = game.helpers;
+}
 
 // requestAnimFrame
 window.requestAnimFrame = (function(callback) {
@@ -32,7 +40,7 @@ var $ = (function(){
 					return document.getElementsByClassName(search);
 				}
 				else {
-					return document.getElementsByTagName(p);	
+					return document.getElementsByTagName(p);
 				}
 			}
 			else if (p.length > 0) {
@@ -43,27 +51,37 @@ var $ = (function(){
 	return dq;
 })();
 
-// 
-Array.prototype.found = function (obj) {
-	var result = false,
-		resultItem = false,
-        i = 0,
-        t = 0,
-        name = null;
-	for (i = 0, t = this.length; i < t; i++) {
-		resultItem = true;
-		for (name in obj) {
-            if (typeof this[i][name] !== 'undefined' && typeof obj[name] !== 'undefined') {
-                if (this[i][name] !== obj[name]) {
-					resultItem = false;
-					break;
+//
+if(!Array.prototype.exists) {
+	Array.prototype.exists = function (obj) {
+		var result = false,
+			resultItem = false,
+			i = 0,
+			t = 0,
+			name = null;
+		for (i = 0, t = this.length; i < t; i++) {
+			resultItem = true;
+			for (name in obj) {
+				if (typeof this[i][name] !== 'undefined' && typeof obj[name] !== 'undefined') {
+					if (this[i][name] !== obj[name]) {
+						resultItem = false;
+						break;
+					}
 				}
 			}
+			if (resultItem) {
+				result = resultItem;
+				break;
+			}
 		}
-		if(resultItem) {
-			result = resultItem;
-			break;
+		return result;
+	};
+}
+
+Object.prototype.extend = function(obj) {
+	for (var i in obj) {
+		if (obj.hasOwnProperty(i)) {
+			this[i] = obj[i];
 		}
 	}
-	return result;
 };

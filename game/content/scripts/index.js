@@ -1,9 +1,9 @@
 "use strict";
 (function () {
 	window.onload = function () {
-		var gameObject = new game({
+		var gameInstance = new game.client ({
 			canvasId: '#game__canvas'
 		});
-		gameObject.load();
+		gameInstance.load();
 	};
 })();

@@ -1,4 +1,5 @@
 "use strict";
+var game = game || {};
 game.canvas = (function (){
 	var canvasElement = null;
 	var canvas = function (p){
@@ -20,7 +21,7 @@ game.canvas = (function (){
 			canvas.style.marginLeft = (limits.width * 0.05) + 'px';
 			canvas.style.marginTop = (limits.height * 0.05) + 'px';
 		}
-	}	
+	}
 
 	return canvas;
 })();

@@ -7,10 +7,19 @@
 </head>
 <body class="game">
 	<canvas id="game__canvas" class="game__canvas" width="0" height="0"></canvas>
-	
-	<script type="text/javascript" src="content/scripts/game.js"></script>
+
+	<div class="game__welcome">
+		<div class="game__welcome__label">Welcome!</div>
+		<div class="game__welcome__label">Player Name:</div>
+		<input type="text" class="game__welcome__text" maxlength="15" />
+		<input type="button" value="Join" class="game__welcome__button" />
+	</div>
+
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 	<script type="text/javascript" src="content/scripts/game.helpers.js"></script>
+    <script type="text/javascript" src="content/scripts/game.events.js"></script>
+    <script type="text/javascript" src="content/scripts/game.client.js"></script>
 	<script type="text/javascript" src="content/scripts/game.canvas.js"></script>
-	<script type="text/javascript" src="index.js"></script>
+	<script type="text/javascript" src="content/scripts/index.js"></script>
 </body>
 </html>
