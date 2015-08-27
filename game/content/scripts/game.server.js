@@ -1,33 +1,65 @@
 "use strict";
-var events = require('./game.events.js'),
-    game = game || {};
+var game = game || {};
+var events = require('./game.events.js');
+var helpers = require('./game.helpers.js');
+var player = require('./game.player.js');
+
+Array = helpers.Array();
+Object = helpers.Object();
 
 game.server = (function (){
 	function game(){
 		var io = require('sandbox-io'),
-				players = [],
-                thisSocket = null;
+				players = new Array(),
+                thisSocket = null,
+				gameDimension = {'cols': 4, 'rows': 3};
 
-		log.debug(events);
 
 		io.on('connection', function(socket) {
             thisSocket = socket;
 			log.debug('New Connection ' + socket.id);
+
 			socket.emit(events.playerWelcome, { 'id':socket.id });
+			socket.emit(events.gameInfo, {'dimension': gameDimension});
 			socket.on(events.playerConnect, onPlayerConnect);
+			socket.on('disconnect', function () { onDisconnect(socket); } );
 		});
 
-		function onPlayerConnect(p, socket) {
-			players = db('players') || [];
-			if (!players[p.name]) {
-				players.push(p.name);
-				db('players', players);
+		function onPlayerConnect(p) {
+			//players = getArrayFromDb('players');
+
+			if (!players.findBy('id', p.id)) {
+				var pObj = new player();
+				pObj.id = p.id;
+				pObj.name = p.name;
+
+				log.debug(pObj);
+
+				players.push(pObj);
+
+				//db('players', players);
 			}
-            thisSocket.emit(events.playerList, { players: players });
+
+			io.emit(events.playerList, players);
+			log.debug(players);
 		}
 
-		function setPlayerInfo(player) {
-			log.debug(player);
+		function onDisconnect(socket) {
+			var playerDisconnected = players.findBy('id', socket.id);
+			if (playerDisconnected) {
+				players.pop(playerDisconnected);
+				io.emit(events.playerList, players);
+				log.debug('Player disconnected ' + socket.id);
+			}
+			else {
+				log.debug('Player not found ' + socket.id);
+			}
+		}
+
+		function getArrayFromDb(array){
+			var playersTmp = db(array) || [];
+			playersTmp = Array.prototype.slice.call(playersTmp);
+			return playersTmp;
 		}
 
 	}

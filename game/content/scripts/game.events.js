@@ -4,7 +4,8 @@ game.events = {
     playerConnect: 'player_connect',
     newPlayer: 'new_player',
     playerWelcome: 'player_welcome',
-    playerList: 'player_list'
+    playerList: 'player_list',
+    gameInfo: 'game_info'
 };
 
 if (typeof module !== "undefined") {
