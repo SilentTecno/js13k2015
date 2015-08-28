@@ -28,6 +28,12 @@ game.client = (function (){
 			canvasHelper.init(limits);
 		};
 
+		this.disconnect = function() {
+			socket.disconnect();
+			thisGame.playerName = '';
+			connected = false;
+		};
+
 		function initWelcome(){
 			var playerName = sessionStorage["playerName"];
 			thisGame.playerName = playerName;
