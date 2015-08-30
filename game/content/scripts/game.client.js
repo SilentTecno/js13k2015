@@ -1,44 +1,44 @@
 "use strict";
 var game = game || {},
-	thatGame = game;
+	thatG = game;
 
 game.client = (function (){
-	var that = this,
-		canvasHelper = null,
-		socket = {},
-		connected = false;
+	var thatC = this;
 
 	var game = function (p) {
-		if(p) {
-			if(p.canvasId) {
-				canvasHelper = new thatGame.canvas({ 'canvas' : $(p.canvasId) });
-			}
-		}
-
-		var limits = thatGame.helpers.getBrowserLimits(),
-			events = thatGame.events,
-			thisGame = this;
+		var thisG = this;
 
 		this.players = [];
 		this.gameInfo = {};
 		this.connected = false;
+		this.canvas = {};
+		this.socket = {};
+
+		if(p) {
+			if(p.canvasId) {
+				thisG.canvas = new thatG.canvas({ 'canvas' : $(p.canvasId) });
+			}
+		}
+
+		var limits = thatG.helpers.getBrowserLimits(),
+			events = thatG.events;
 
 		this.load = function () {
 			initWelcome();
-			canvasHelper.init(limits);
+			thisG.canvas.init(limits);
 		};
 
 		this.disconnect = function() {
-			socket.disconnect();
-			thisGame.playerName = '';
-			connected = false;
+			thisG.socket.disconnect();
+			thisG.playerName = '';
+			thisG.connected = false;
 		};
 
 		function initWelcome(){
 			var playerName = sessionStorage["playerName"];
-			thisGame.playerName = playerName;
+			thisG.playerName = playerName;
 
-			if (thatGame.helpers.isEmpty(playerName)) {
+			if (thatG.helpers.isEmpty(playerName)) {
 				$('.game__welcome')[0].style.display = 'flex';
 				$('.game__welcome__text')[0].focus();
 				$('.game__welcome__button')[0].onclick = joinClick;
@@ -55,40 +55,40 @@ game.client = (function (){
 			if(validateNameRegex.test(playerName)) {
 				$('.game__welcome')[0].style.display = 'none';
 				sessionStorage["playerName"] = playerName;
-				thisGame.playerName = playerName;
+				thisG.playerName = playerName;
 				connect();
 			}
 			else {
 				alert('Player Name not valid.');
 			}
-
 		}
 
 		function connect() {
 			console.log('connecting...');
-			if (!socket.conected || socket.conected === false) {
-				socket = io(document.location.href);
+			if (!thisG.socket.conected || thisG.socket.conected === false) {
+				thisG.socket = io(document.location.href);
 			}
 
-			socket.on(events.playerWelcome, onPlayerWelcome);
-			socket.on(events.playerList, onPlayerList);
-			socket.on(events.gameInfo, onGameInfo);
+			thisG.socket.on(events.playerWelcome, onPlayerWelcome);
+			thisG.socket.on(events.playerList, onPlayerList);
+			thisG.socket.on(events.gameInfo, onGameInfo);
 		}
 
 		function onPlayerWelcome(p){
 			console.log(events.playerConnect);
-			connected = true;
-			socket.emit(events.playerConnect, { 'id': p.id, 'name': sessionStorage["playerName"] });
+			thisG.connected = true;
+			thisG.socket.emit(events.playerConnect, { 'id': p.id, 'name': sessionStorage["playerName"] });
 		}
 
 		function onPlayerList(list){
 			console.log(events.playerList);
-			thisGame.players = list;
+			thisG.players = list;
 		}
 
 		function onGameInfo(g) {
 			console.log(events.gameInfo);
-			thisGame.gameInfo = g;
+			thisG.gameInfo = g;
+			thisG.canvas.setGrid(g.dimension.cols, g.dimension.rows);
 		}
 
 		function generatePlayerName(){

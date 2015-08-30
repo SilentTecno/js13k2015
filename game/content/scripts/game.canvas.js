@@ -1,7 +1,10 @@
 "use strict";
 var game = game || {};
 game.canvas = (function (){
-	var canvasElement = null;
+	var canvasElement = null,
+		cols = 0,
+		rows = 0;
+
 	var canvas = function (p){
 		if(p){
 			if(p.canvas){
@@ -10,6 +13,11 @@ game.canvas = (function (){
 		}
 		this.init = function (){
 			setCanvasSize(canvasElement);
+		};
+		this.setGrid = function(pCols, pRows) {
+			cols = pCols;
+			rows = pRows;
+			console.log(cols + ' '+ rows);
 		};
 	};
 

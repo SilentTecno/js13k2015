@@ -27,16 +27,11 @@ game.server = (function (){
 
 		function onPlayerConnect(p) {
 			//players = getArrayFromDb('players');
-
 			if (!players.findBy('id', p.id)) {
 				var pObj = new player();
 				pObj.id = p.id;
 				pObj.name = p.name;
-
-				log.debug(pObj);
-
 				players.push(pObj);
-
 				//db('players', players);
 			}
 
