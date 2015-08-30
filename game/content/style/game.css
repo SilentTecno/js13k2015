@@ -1,0 +1,44 @@
+body
+{
+	margin:0;
+	padding:0;
+	border:0;
+	background-color:lightgray;
+	font-size:10px;
+}
+.game__canvas
+{
+	border: 1px solid black;
+}
+.game__welcome
+{
+	display: flex;
+	border: 1px solid black;
+	width: 40%;
+	height: 10rem;
+	position: absolute;
+	top: 10%;
+	left: 30%;
+	background-color:white;
+	display: none;
+	flex-direction: column;
+	flex-flow: column;
+	justify-content: space-around;
+	align-items: center;
+}
+.game__welcome__label
+{
+	font-size:1.7rem;
+	text-align: center;
+}
+.game__welcome__text
+{
+	font-size:1.7rem;
+	width:50%;
+	text-align: center;
+}
+.game__welcome__button
+{
+	font-size: 1.7rem;
+	width: 25%;
+}
