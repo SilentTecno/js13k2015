@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Game</title>
-	<link rel="stylesheet" href="content/styles/game.min.css">
+	<link rel="stylesheet" href="content/styles/game.css">
 </head>
 <body class="game">
 	<canvas id="game__canvas" class="game__canvas" width="0" height="0"></canvas>
@@ -16,6 +16,11 @@
 	</div>
 
 	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
-	<script type="text/javascript" src="content/scripts/index.min.js"></script>
+	<script type="text/javascript" src="content/scripts/game.helpers.js"></script>
+    <script type="text/javascript" src="content/scripts/game.events.js"></script>
+    <script type="text/javascript" src="content/scripts/game.client.js"></script>
+	<script type="text/javascript" src="content/scripts/game.canvas.js"></script>
+	<script type="text/javascript" src="content/scripts/game.player.js"></script>
+	<script type="text/javascript" src="content/scripts/index.js"></script>
 </body>
 </html>

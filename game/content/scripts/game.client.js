@@ -66,7 +66,9 @@ game.client = (function (){
 		function connect() {
 			console.log('connecting...');
 			if (!thisG.socket.conected || thisG.socket.conected === false) {
-				thisG.socket = io(document.location.href);
+				//thisG.socket = io(document.location.href.toString().replace('.dev.', '.'));
+				thisG.socket = io('');
+				thisG.socket.connect();
 			}
 
 			thisG.socket.on(events.playerWelcome, onPlayerWelcome);
