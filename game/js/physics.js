@@ -45,9 +45,6 @@ var Physics = ( function () {
 				then = now - (delta % interval);
 
 
-				// A partir de aquí inicia nuestro experimento de gravedad
-
-
 				for (var i in particles) {
 
 					var p = particles[i];

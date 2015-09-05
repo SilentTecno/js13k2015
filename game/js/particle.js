@@ -16,7 +16,7 @@ var Particle = ( function(){
 			_particle.lastVelocity = new Vector({x:0, y: 0});
 			_particle.grounded = {x: false, y: false};
 			_particle.acceleration = new Vector({x:0, y: 0});
-			_particle.forces = new Vector({x:0, y: 0});
+			_particle.forces = p.forces || new Vector({x:0, y: 0});
 			_particle._type = p._type;
 			_particle.cruiseVelocity = p.cruiseVelocity || 1.5;
 			_particle.rotation = p.rotation || 0;
@@ -25,22 +25,38 @@ var Particle = ( function(){
 		this.draw = function(ctx) {
 
 			ctx.beginPath();
+			ctx.save();
 
 			switch(this._type) {
 				case 'ship':
-					//ctx.translate(this.position.x, this.position.y);
+					var orig = {x: - (this.size.width/2), y: - (this.size.height/2)}
 					ctx.lineWidth = 2;
-					ctx.moveTo(this.position.x, this.position.y);
-					ctx.lineTo(this.position.x + this.size.width, this.position.y + (this.size.height/2));
-					ctx.moveTo(this.position.x + this.size.width, this.position.y + (this.size.height/2));
-					ctx.lineTo(this.position.x, this.position.y + this.size.height);
-					ctx.moveTo(this.position.x, this.position.y + this.size.height);
-					ctx.lineTo(this.position.x + (this.size.width/3), this.position.y + (this.size.height/2));
-					ctx.moveTo(this.position.x + (this.size.width/3), this.position.y + (this.size.height/2));
-					ctx.lineTo(this.position.x, this.position.y);
+					ctx.translate(this.position.x + (this.size.width/2), this.position.y + (this.size.height/2));
+					//ctx.translate(this.position.x, this.position.y);
+					ctx.rotate(this.rotation * Math.PI/180);
+					ctx.moveTo(orig.x, orig.y);
+					ctx.lineTo(orig.x + this.size.width, orig.y + (this.size.height/2));
+					ctx.moveTo(orig.x + this.size.width, orig.y + (this.size.height/2));
+					ctx.lineTo(orig.x, orig.y + this.size.height);
+					ctx.moveTo(orig.x, orig.y + this.size.height);
+					ctx.lineTo(orig.x + (this.size.width/3), orig.y + (this.size.height/2));
+					ctx.moveTo(orig.x + (this.size.width/3), orig.y + (this.size.height/2));
+					ctx.lineTo(orig.x, orig.y);
+					ctx.fillStyle = "#FF0000";
+					// ctx.fillRect(orig.x, orig.y,this.size.width,this.size.height);
 					ctx.strokeStyle = this.color || 'orange';
 					ctx.stroke();
-					ctx.rotate(this.rotation * Math.PI / 180);
+				break;
+				case 'laser':
+					var orig = {x: - (this.size.width/2)}
+					ctx.lineWidth = 3;
+					// ctx.translate(this.position.x + (this.size.width/2), this.position.y + (this.size.height/2));
+					ctx.translate(this.position.x, this.position.y);
+					ctx.rotate(this.rotation * Math.PI/180);
+					ctx.moveTo(0, 0);
+					ctx.lineTo(this.size.width, 0);
+					ctx.strokeStyle = this.color || 'orange';
+					ctx.stroke();
 				break;
 				case 'asteriod':
 					ctx.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI);
@@ -53,7 +69,7 @@ var Particle = ( function(){
 					ctx.fill();
 				break;
 			}
-
+			ctx.restore();
 			ctx.closePath();
 
 			if (window.debug_mode) {

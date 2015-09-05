@@ -1,7 +1,7 @@
 var physics_fps = 50;
 var graphics_fps = 120;
 var debug_mode = false;
-var particles = {};
+var particles = [];
 var _canvas = document.getElementById('generalCanvas');
 // var number_of_particles = 3;
 
@@ -28,7 +28,7 @@ window.onload = function () {
 	var particle = new Particle();
 	particle.init({color: 'green', size: {width: 20, height: 20}, position: {x: 0, y: 0}, mass: 0.3, _type: 'ship'});
 
-	particles.player = particle;
+	particles.push(particle);
 
 	physicsEngine.animate();
 	graphicsEngine.animate();
