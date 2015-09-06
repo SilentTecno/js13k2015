@@ -1,12 +1,19 @@
 "use strict";
 var game = game || {},
-	thatG = game;
+	thatG = game,
+	_canvas,
+	particles;
 
 game.client = (function (){
 	var thatC = this;
 
 	var game = function (p) {
 		var thisG = this;
+
+		var physics_fps = 50;
+		var graphics_fps = 120;
+		var debug_mode = false;
+		particles = [];
 
 		this.players = [];
 		this.gameInfo = {};
@@ -26,6 +33,8 @@ game.client = (function (){
 		this.load = function () {
 			initWelcome();
 			thisG.canvas.init(limits);
+			_canvas = thisG.canvas.canvasElement;
+			// naag();
 		};
 
 		this.disconnect = function() {
@@ -74,17 +83,30 @@ game.client = (function (){
 			thisG.socket.on(events.playerWelcome, onPlayerWelcome);
 			thisG.socket.on(events.playerList, onPlayerList);
 			thisG.socket.on(events.gameInfo, onGameInfo);
+			thisG.socket.on(events.player, onPlayer);
+		}
+
+		function onPlayer(player) {
+			console.log(player);
 		}
 
 		function onPlayerWelcome(p){
 			console.log(events.playerConnect);
 			thisG.connected = true;
 			thisG.socket.emit(events.playerConnect, { 'id': p.id, 'name': sessionStorage["playerName"] });
+			naag();
 		}
 
 		function onPlayerList(list){
 			console.log(events.playerList);
-			thisG.players = list;
+			// if (particles.length == 0)
+				// naag();
+			particles = [];
+			for (var p = 0; p < list.length; p++) {
+				var particle = new Particle();
+				particle.init(list[p]);
+				particles.push(particle);
+			}
 		}
 
 		function onGameInfo(g) {
@@ -95,6 +117,41 @@ game.client = (function (){
 
 		function generatePlayerName(){
 			return 'Player '+ Math.random().toString().replace(/.*\./,'');
+		}
+
+		function naag() {
+			var physicsEngine = new Physics();
+			var graphicsEngine = new Graphics();
+			var controlsEngine = new Controls();
+
+			physicsEngine.init({
+				fps: physics_fps
+			});
+
+			graphicsEngine.init({
+				fps: graphics_fps
+			});
+
+			controlsEngine.init({
+				activated: true,
+				postEvent: onPostEvent
+			});
+
+			// var particle = new Particle();
+			// particle.init({color: 'green', size: {width: 20, height: 20}, position: {x: 0, y: 0}, mass: 0.3, _type: 'ship'});
+
+			// particles.push(particle);
+
+			physicsEngine.animate();
+			graphicsEngine.animate();
+		}
+
+		function onPostEvent() {
+			var particle = new Particle();
+			var me = particles.findBy('id', thisG.socket.id);
+			particle.init(me);
+
+			thisG.socket.emit(events.playerMovement, particle);
 		}
 	};
 

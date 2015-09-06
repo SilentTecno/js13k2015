@@ -5,7 +5,9 @@ game.events = {
     newPlayer: 'new_player',
     playerWelcome: 'player_welcome',
     playerList: 'player_list',
-    gameInfo: 'game_info'
+    gameInfo: 'game_info',
+    player: 'player',
+    playerMovement: 'playerMovement'
 };
 
 if (typeof module !== "undefined") {

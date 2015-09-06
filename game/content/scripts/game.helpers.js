@@ -12,54 +12,54 @@ game.helpers = {
 		return (typeof object === "undefined" || object === null || object === "" );
 	},
 	Array: function(){
-		if(!Array.prototype.exists) {
-			Array.prototype.exists = function (obj) {
-				var result = false,
-					resultItem = false,
-					i = 0,
-					t = 0,
-					name = null;
-				for (i = 0, t = this.length; i < t; i++) {
-					resultItem = true;
-					for (name in obj) {
-						if (typeof this[i][name] !== 'undefined' && typeof obj[name] !== 'undefined') {
-							if (this[i][name] !== obj[name]) {
-								resultItem = false;
-								break;
-							}
-						}
-					}
-					if (resultItem) {
-						result = resultItem;
-						break;
-					}
-				}
-				return result;
-			};
-		}
+		// if(!Array.prototype.exists) {
+		// 	Array.prototype.exists = function (obj) {
+		// 		var result = false,
+		// 			resultItem = false,
+		// 			i = 0,
+		// 			t = 0,
+		// 			name = null;
+		// 		for (i = 0, t = this.length; i < t; i++) {
+		// 			resultItem = true;
+		// 			for (name in obj) {
+		// 				if (typeof this[i][name] !== 'undefined' && typeof obj[name] !== 'undefined') {
+		// 					if (this[i][name] !== obj[name]) {
+		// 						resultItem = false;
+		// 						break;
+		// 					}
+		// 				}
+		// 			}
+		// 			if (resultItem) {
+		// 				result = resultItem;
+		// 				break;
+		// 			}
+		// 		}
+		// 		return result;
+		// 	};
+		// }
 
-		if (!Array.prototype.find) {
-			Array.prototype.find = function(predicate) {
-				if (this == null) {
-					throw new TypeError('Array.prototype.find called on null or undefined');
-				}
-				if (typeof predicate !== 'function') {
-					throw new TypeError('predicate must be a function');
-				}
-				var list = Object(this);
-				var length = list.length >>> 0;
-				var thisArg = arguments[1];
-				var value;
+		// if (!Array.prototype.find) {
+		// 	Array.prototype.find = function(predicate) {
+		// 		if (this == null) {
+		// 			throw new TypeError('Array.prototype.find called on null or undefined');
+		// 		}
+		// 		if (typeof predicate !== 'function') {
+		// 			throw new TypeError('predicate must be a function');
+		// 		}
+		// 		var list = Object(this);
+		// 		var length = list.length >>> 0;
+		// 		var thisArg = arguments[1];
+		// 		var value;
 
-				for (var i = 0; i < length; i++) {
-					value = list[i];
-					if (predicate.call(thisArg, value, i, list)) {
-						return value;
-					}
-				}
-				return undefined;
-			};
-		}
+		// 		for (var i = 0; i < length; i++) {
+		// 			value = list[i];
+		// 			if (predicate.call(thisArg, value, i, list)) {
+		// 				return value;
+		// 			}
+		// 		}
+		// 		return undefined;
+		// 	};
+		// }
 
 		Array.prototype.findBy = function(property, value){
 			var list = Object(this);
@@ -96,8 +96,9 @@ if (typeof module !== "undefined") {
     module.exports = game.helpers;
 }
 else {
-	/*Array = game.helpers.Array(Array);
-	Object = game.helpers.Object(Object);*/
+
+	Array = game.helpers.Array(Array);
+	// Object = game.helpers.Object(Object);
 
 	// requestAnimFrame
 	window.requestAnimFrame = (function (callback) {
